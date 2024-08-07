@@ -5,98 +5,68 @@
 //tips: have as little global code as possible
 // tuck as much as possible into function factories
 // three kinds of objects
-    // - a gameboard
-    // - a player
-    // - a game
+// - a gameboard
+// - a player
+// - a game
 
-// use an object for the display logic
-// probably need to create an object for the interface
+/* use an object for the display logic
+ probably need to create an object for the interface; 
+ This object probably just needs to read the state of the board
+
+- Tic tac toe process
+1. Defaults
+    - There are two players: 
+        - player 1: defaults to x
+        - player 2: defaults to o
+
+
+
+
+*/
+
+const player = (name, token) => {
+  const getName = name;
+  const getToken = token;
+
+  return {
+    getName,
+    getToken,
+  };
+};
+
+const Gameboard = (function(){
+
+    function
+
+
+
+})(); 
 
 const game = (function(){
 
-}());
-
-// functions
-const gameboard = (function(){
-
-
-    const gameBoard = []
-
-    function createGameboard(){ 
-
-        let gameBoard = document.querySelector(".gameboard")
     
-        for(let i = 1; i < 10; i ++){
-    
-            let square = document.createElement("div"); 
-            square.classList.add("square"); 
-            square.setAttribute('id', i);
-            square.innerText = i; 
-            gameBoard.appendChild(square);
-    
-    
-        }
-    }
-
-    function toggleBlock(){
-
-    }
-
-    return {createGameboard}
 
 })(); 
+
+const createUI = (function () {
+  function createGameboard() {
+    let gameboard = document.querySelector(".gameboard");
+    for (i = 1; i < 10; i++) {
+      let square = document.createElement("div");
+      square.classList.add("square");
+      square.setAttribute("id", i);
+      square.innerText = i;
+      gameboard.appendChild(square);
+    }
+  }
+
+  // What all do we want back?
+  return {
+    createGameboard,
+  };
+})();
+
 // run functions
 
-
-
-function makeGameBoard(){
-    // dimensions of the board
-    const rows = 3; 
-    const columns = 3; 
-    const board = []
-
-    // creating a 3x3 array to function as the tic-tac-toe gameboard
-    for(let i = 0; i < rows; i++){
-        board[i] = []; 
-        for(let j = 0; j < columns; j++){
-            board[i].push(""); 
-        }
-    }
-
-    return board 
-}; 
-
-const player = (name, token) => {
-
-    const getName = () => name; 
-    const getToken = () => token; 
-
-    return {
-        getName, 
-        getToken
-    }; 
-
-}; 
-
-
-function getUserInput(){
-
-    var row = prompt("Select row"); 
-    var column = prompt("Select column"); 
-
-    const selection = {
-        row: row, 
-        column: column
-    }
-
-    return { 
-        selection
-    }
-
-}
-
-// run functions
-userInput = getUserInput();
-gameboard.createGameboard(); 
-
-
+// obviously the first thing is we gotta create the UI
+createUI.createGameboard();
