@@ -99,16 +99,17 @@ function gameController(playerOne = "Player One", playerTwo = "Player Two") {
 
   const players = {
     playerOne: {
-      playerOneName: playerOne,
+      playerName: playerOne,
       token: "X",
     },
     playerTwo: {
-      playerTwoName: playerTwo,
+      playerName: playerTwo,
       token: "Y",
     },
   };
   const game = gameBoard();
   let currentPlayer = players.playerOne;
+  let currentRound  = 0;
 
   const switchPlayer = () => {
     if (currentPlayer == players.playerOne) {
@@ -120,7 +121,16 @@ function gameController(playerOne = "Player One", playerTwo = "Player Two") {
     return currentPlayer;
   };
 
+  const incrementRound = () =>{
+    currentRound = currentRound + 1;
+  }
+
+  const resetRound = () => { 
+    currentRound = 0; 
+  }
+
   const getCurrentPlayer = () => currentPlayer;
+  const getCurrentRound = () => currentRound;
 
   /* Playing a round involves picking a spot, 
   switching the player, 
@@ -129,15 +139,18 @@ function gameController(playerOne = "Player One", playerTwo = "Player Two") {
   const playRound = (index, token = getCurrentPlayer().token) => {
 
 
-    game.updateBoard(index, token = token)
+    game.updateBoard(index, token = token);
     
-    switchPlayer()
+    incrementRound();
+    switchPlayer(); 
 
   }
 
   return {
     switchPlayer,
     getCurrentPlayer,
+    getCurrentRound,
+    resetRound,
     playRound, 
     game
 
@@ -164,18 +177,44 @@ function gameInterface() {
     }
   }
 
+  const updateScoreBoard = () => {
+
+    scoreboard.innerHTML = ''
+
+    scoreboard.innerText = game.getCurrentRound();
+
+
+
+
+
+
+  }
+
+
   function buttonPress() {
     boardDiv.addEventListener('click', (e) => {
       if (e.target.classList.contains('square')) {
         const selectedButton = e.target.dataset.index;
         game.playRound(selectedButton);
         updateScreen();
+        updateScoreBoard();
       }
     });
   }
 
+  function resetBoard(){
+    const resetButton = document.querySelector("#reset-button"); 
+    resetButton.addEventListener('click', ()=>{
+
+      game.game.resetBoard(); 
+      game.resetRound();
+      updateScreen();
+
+    });} 
+
   updateScreen();
   buttonPress();
+  resetBoard();
 }
 
 gameInterface();
