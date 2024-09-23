@@ -109,7 +109,7 @@ function gameController(playerOne = "Player One", playerTwo = "Player Two") {
   };
   const game = gameBoard();
   let currentPlayer = players.playerOne;
-  let currentRound  = 0;
+  let currentRound = 0;
 
   const switchPlayer = () => {
     if (currentPlayer == players.playerOne) {
@@ -121,13 +121,13 @@ function gameController(playerOne = "Player One", playerTwo = "Player Two") {
     return currentPlayer;
   };
 
-  const incrementRound = () =>{
+  const incrementRound = () => {
     currentRound = currentRound + 1;
-  }
+  };
 
-  const resetRound = () => { 
-    currentRound = 0; 
-  }
+  const resetRound = () => {
+    currentRound = 0;
+  };
 
   const getCurrentPlayer = () => currentPlayer;
   const getCurrentRound = () => currentRound;
@@ -135,65 +135,56 @@ function gameController(playerOne = "Player One", playerTwo = "Player Two") {
   /* Playing a round involves picking a spot, 
   switching the player, 
   printing the board
-  */ 
+  */
   const playRound = (index, token = getCurrentPlayer().token) => {
+    game.updateBoard(index, (token = token));
 
-
-    game.updateBoard(index, token = token);
-    
     incrementRound();
-    switchPlayer(); 
-
-  }
+    switchPlayer();
+  };
 
   return {
     switchPlayer,
     getCurrentPlayer,
     getCurrentRound,
     resetRound,
-    playRound, 
-    game
-
+    playRound,
+    game,
   };
 }
 
 function gameInterface() {
   const game = gameController();
-  const scoreboard = document.querySelector('.scoreboard');
+  const scoreboard = document.querySelector(".scoreboard");
   const boardDiv = document.querySelector(".gameboard");
 
   const updateScreen = () => {
     // Clear the existing board
-    boardDiv.innerHTML = '';
+    boardDiv.innerHTML = "";
 
     const board = game.game.getBoard();
-    
+
     for (let i = 0; i < board.length; i++) {
       let square = document.createElement("button");
       square.classList.add("square");
       square.dataset.index = i;
-      square.innerText = board[i] || ''; // Use empty string if the cell is null
+      square.innerText = board[i] || ""; // Use empty string if the cell is null
       boardDiv.appendChild(square);
     }
-  }
+  };
 
   const updateScoreBoard = () => {
+    scoreboard.innerHTML = "";
 
-    scoreboard.innerHTML = ''
-
-    scoreboard.innerText = game.getCurrentRound();
-
-
-
-
-
-
-  }
-
+    scoreboard.innerText = `Current Player: ${
+      game.getCurrentPlayer().playerName
+    }\n
+    Current Round: ${game.getCurrentRound()}`;
+  };
 
   function buttonPress() {
-    boardDiv.addEventListener('click', (e) => {
-      if (e.target.classList.contains('square')) {
+    boardDiv.addEventListener("click", (e) => {
+      if (e.target.classList.contains("square")) {
         const selectedButton = e.target.dataset.index;
         game.playRound(selectedButton);
         updateScreen();
@@ -202,15 +193,15 @@ function gameInterface() {
     });
   }
 
-  function resetBoard(){
-    const resetButton = document.querySelector("#reset-button"); 
-    resetButton.addEventListener('click', ()=>{
-
-      game.game.resetBoard(); 
+  function resetBoard() {
+    const resetButton = document.querySelector("#reset-button");
+    resetButton.addEventListener("click", () => {
+      game.game.resetBoard();
       game.resetRound();
-      updateScreen();
 
-    });} 
+      updateScreen();
+    });
+  }
 
   updateScreen();
   buttonPress();
